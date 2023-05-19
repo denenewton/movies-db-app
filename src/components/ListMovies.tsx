@@ -8,20 +8,14 @@ import {
 } from "@chakra-ui/react";
 import { DocumentData } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import SearchContext from "../contexts/SearchContext";
-import { Movie } from "./RegisterMovies";
 
 const ListMovies = () => {
-  const [filterMov, setFilterMov] = useState<Movie[]>([]);
   const { movies, searchText } = useContext(SearchContext);
 
-  useEffect(() => {
-    const m = movies.filter((m) =>
-      m.title.toLowerCase().includes(searchText.toLowerCase())
-    );
-    setFilterMov(m);
-  }, [searchText]);
+  const _movies = searchText ? movies.filter((m) =>
+    m.title.toLowerCase().includes(searchText.toLowerCase())) : movies
 
   return (
     <div>
@@ -30,7 +24,7 @@ const ListMovies = () => {
         padding="10px"
         spacing={4}
       >
-        {(searchText === '' ? movies : filterMov).map((m: DocumentData) => (
+        {_movies.map((m: DocumentData) => (
           <Card key={m.title} overflow="hidden">
             <Link to={`/details/${m.title}`}>
               <Image src={m.url} />
