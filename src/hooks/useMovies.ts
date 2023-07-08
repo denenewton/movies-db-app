@@ -7,7 +7,7 @@ const useMovies = (title: string | undefined) => {
 
   useEffect(() => {
     (async () => {
-      const m = await getMovieDetails(title);
+      const m = await getMovieDetails(title?.toString());
       setMovie(m);
     })();
   }, []);
